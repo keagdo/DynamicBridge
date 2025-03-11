@@ -57,6 +57,7 @@ namespace DynamicBridge.Configuration
         public bool Cond_Job = true;
         public bool Cond_World = false;
         public bool Cond_Gearset = false;
+        public bool Cond_Players = false;
 
         public Dictionary<ulong, List<GearsetEntry>> GearsetNameCacheCID = [];
 
@@ -67,6 +68,7 @@ namespace DynamicBridge.Configuration
         public bool UnifyJobs = true;
         public bool HonotificUnfiltered = false;
         public bool AutofillFromGlam = false;
+        public List<(string Name, float Distance)> selectedPlayers = new List<(string Name, float Distance)>();
     }
 
     public enum GlamourerNoRuleBehavior
