@@ -23,7 +23,7 @@ namespace DynamicBridge.Gui
     {
         private static Vector2 iconSize => new(24f);
 
-        private static string[] Filters = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+        private static string[] Filters = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
         private static bool[] OnlySelected = new bool[20];
         private static string CurrentDrag = "";
 
@@ -79,6 +79,7 @@ namespace DynamicBridge.Gui
                     C.Cond_Zone,
                     C.Cond_ZoneGroup,
                     C.Cond_Players,
+                    C.Cond_Race,
                 ];
 
                 List<(Vector2 RowPos, Vector2 ButtonPos, Action BeginDraw, Action AcceptDraw)> MoveCommands = [];
@@ -99,6 +100,7 @@ namespace DynamicBridge.Gui
                     if(C.Cond_World) ImGui.TableSetupColumn("World");
                     if(C.Cond_Gearset) ImGui.TableSetupColumn("Gearset");
                     if(C.Cond_Players) ImGui.TableSetupColumn("Players");
+                    if(C.Cond_Race) ImGui.TableSetupColumn("Race");
                     ImGui.TableSetupColumn("Preset");
                     ImGui.TableSetupColumn(" ", ImGuiTableColumnFlags.NoResize | ImGuiTableColumnFlags.WidthFixed);
                     ImGui.TableHeadersRow();
@@ -555,6 +557,33 @@ namespace DynamicBridge.Gui
 
                             if (fullList != null) 
                                 ImGuiEx.Tooltip(UI.AnyNotice + fullList);
+                        }
+                        filterCnt++;
+
+                        if(C.Cond_Race)
+                        {
+                            ImGui.TableNextColumn();
+                            //Race
+                            ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X);
+                            if(ImGui.BeginCombo("##race", rule.Races.PrintRange(rule.Not.Races, out var fullList), C.ComboSize))
+                            {
+                                FiltersSelection();
+                                foreach(var cond in Enum.GetValues<Races>())
+                                {
+                                    if(cond == Races.No_Race) continue;
+                                    var name = cond.ToString().Replace("_", " ");
+                                    if(Filters[filterCnt].Length > 0 && !name.Contains(Filters[filterCnt], StringComparison.OrdinalIgnoreCase)) continue;
+                                    if(OnlySelected[filterCnt] && !rule.Races.Contains(cond)) continue;
+                                    // if(ThreadLoadImageHandler.TryGetTextureWrap(Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName, "res", "race", $"{(int)cond}.png"), out var texture))
+                                    // {
+                                    //     ImGui.Image(texture.ImGuiHandle, iconSize);
+                                    //     ImGui.SameLine();
+                                    // }
+                                    DrawSelector(name, cond, rule.Races, rule.Not.Races);
+                                }
+                                ImGui.EndCombo();
+                            }
+                            if(fullList != null) ImGuiEx.Tooltip(UI.AnyNotice + fullList);
                         }
                         filterCnt++;
 

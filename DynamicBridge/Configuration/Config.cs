@@ -58,7 +58,8 @@ namespace DynamicBridge.Configuration
         public bool Cond_World = false;
         public bool Cond_Gearset = false;
         public bool Cond_Players = false;
-
+        public bool Cond_Race = false;
+        public bool Cond_Race_Bonus = false;
         public Dictionary<ulong, List<GearsetEntry>> GearsetNameCacheCID = [];
 
         public string CensorSeed = Guid.NewGuid().ToString();
